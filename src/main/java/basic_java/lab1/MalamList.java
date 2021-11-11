@@ -3,11 +3,11 @@ package basic_java.lab1;
 /**
  * @author Evgeny Borisov
  */
-public interface MalamList {
+public interface MalamList<T> {
 
-    void add(Object o);
+    void add(T o);
 
-    Object get(int index);
+    T get(int index);
 
     int size();
 

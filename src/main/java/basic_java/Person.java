@@ -1,5 +1,7 @@
 package basic_java;
 
+import lombok.Builder;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,20 +9,21 @@ import java.util.List;
 /**
  * @author Evgeny Borisov
  */
+@Builder
 public class Person {
+
+
+
 
     private String name;
     private int age;
 
-    private List<String> names = new ArrayList<>();
-
+    public Person() {
+        super();
+    }
 
     public Person(String name, int age) {
-
-
-        int size = names.size();
-
-
+        super();
         setName(name);
         setAge(age);
     }
