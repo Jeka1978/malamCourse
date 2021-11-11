@@ -40,7 +40,7 @@ public class ObjectFactory {
                 Random random = new Random();
                 int value = random.nextInt(max-min)+min;
                 field.setAccessible(true);
-                field.set(t,value);
+                field.set(t,666);
 
             }
         }
