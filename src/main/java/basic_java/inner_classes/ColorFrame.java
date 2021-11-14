@@ -4,36 +4,34 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Evgeny Borisov
  */
 public class ColorFrame extends JFrame {
 
-    public ColorFrame() throws HeadlessException {
+
+    public ColorFrame(final AtomicInteger atomicInteger) throws HeadlessException {
+
+
+
+
+
 
         JButton button = new JButton("click me");
         getContentPane().add(button, BorderLayout.NORTH);
 
-        ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(12);
-            }
-        };
-
-        button.addActionListener(listener);
-
-
-        setSize(400,400);
+        button.addActionListener(e -> {
+            System.out.println(atomicInteger.incrementAndGet());
+        });
+        setSize(400, 400);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-
     }
 
 
     public static void main(String[] args) {
-        new ColorFrame();
+        new ColorFrame(new AtomicInteger(10));
     }
 }
