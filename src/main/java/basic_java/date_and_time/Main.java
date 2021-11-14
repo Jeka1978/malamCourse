@@ -11,7 +11,19 @@ import java.util.Locale;
  * @author Evgeny Borisov
  */
 public class Main {
+
+
+    //mm%dd%yyyy   12%31%1980
+    public void printDayOfWeek(String dateAsText) {
+
+    }
+
+
     public static void main(String[] args) {
+
+
+
+
         LocalDate localDate = LocalDate.now();
         System.out.println(localDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.TAIWAN));
         LocalDate date = localDate.plusYears(1);
