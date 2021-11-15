@@ -1,10 +1,14 @@
 package my_spring;
 
 import lombok.SneakyThrows;
+import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Evgeny Borisov
@@ -13,8 +17,17 @@ public class ObjectFactory {
 
     private static ObjectFactory instance = new ObjectFactory();
     private Config config = new JavaConfig();
+    private List<ObjectConfigurator> configurators = new ArrayList<>();
+    private Reflections scanner = new Reflections("my_spring");
 
+    @SneakyThrows
     private ObjectFactory() {
+        Set<Class<? extends ObjectConfigurator>> classes = scanner.getSubTypesOf(ObjectConfigurator.class);
+        for (Class<? extends ObjectConfigurator> aClass : classes) {
+            ObjectConfigurator objectConfigurator = create(aClass);
+            configurators.add(objectConfigurator);
+        }
+
     }
 
     public static ObjectFactory getInstance() {
@@ -22,27 +35,16 @@ public class ObjectFactory {
     }
 
 
+
     @SneakyThrows
     public <T> T createObject(Class<T> type) {
-
 
         type = resolveImpl(type);
 
         T t = create(type);
 
-
-        Field[] fields = type.getDeclaredFields();
-        for (Field field : fields) {
-            InjectRandomInt annotation = field.getAnnotation(InjectRandomInt.class);
-            if (annotation != null) {
-                int min = annotation.min();
-                int max = annotation.max();
-                Random random = new Random();
-                int value = random.nextInt(max-min)+min;
-                field.setAccessible(true);
-                field.set(t,666);
-
-            }
+        for (ObjectConfigurator configurator : configurators) {
+            configurator.configure(t);
         }
 
 
